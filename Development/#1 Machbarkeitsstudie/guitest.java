@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 public class guitest {
     private static ReagenzglasPanel selectedPanel = null;
+    private static Timer timer;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Water Sort Puzzle");
@@ -36,7 +37,7 @@ public class guitest {
         frame.add(timerLabel, BorderLayout.SOUTH);
 
         // Timer
-        Timer timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(1000, new ActionListener() {
             int seconds = 0;
 
             @Override
@@ -74,6 +75,7 @@ public class guitest {
                 if (selectedPanel != panel) {
                     selectedPanel.transferColorTo(panel);
                     if (isGameFinished(panel.getParent())) {
+                        timer.stop();
                         JOptionPane.showMessageDialog(null, "Heyy, du hast alle Farben Sortiert");
                     }
                 }
