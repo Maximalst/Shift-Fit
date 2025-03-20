@@ -5,7 +5,7 @@ public class guitest {
     public static void main(String[] args) {
      
         JFrame frame = new JFrame("Water Sort Puzzle");
-        frame.setSize(800, 400);
+        frame.setSize(1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(1, 4)); // 1 Zeile, 4 Spalten
 
@@ -13,13 +13,13 @@ public class guitest {
         JPanel panel1 = new ReagenzglasPanel(new Color[]{Color.RED, Color.GREEN, Color.BLUE});
         frame.add(panel1);
         
-        JPanel panel2 = new ReagenzglasPanel(new Color[]{Color.YELLOW, Color.PINK, Color.CYAN});
+        JPanel panel2 = new ReagenzglasPanel(new Color[]{Color.YELLOW, Color.RED, Color.GREEN});
         frame.add(panel2);
 
-        JPanel panel3 = new ReagenzglasPanel(new Color[]{Color.ORANGE, Color.MAGENTA, Color.LIGHT_GRAY});
+        JPanel panel3 = new ReagenzglasPanel(new Color[]{Color.BLUE, Color.YELLOW, Color.RED});
         frame.add(panel3);
 
-        JPanel panel4 = new ReagenzglasPanel(new Color[]{Color.WHITE, Color.DARK_GRAY, Color.BLACK});
+        JPanel panel4 = new ReagenzglasPanel(new Color[]{Color.GREEN, Color.BLUE, Color.YELLOW});
         frame.add(panel4);
 
         // Zeigt das Fenster
@@ -44,9 +44,9 @@ class ReagenzglasPanel extends JPanel {
         int width = getWidth();
         int height = getHeight();
         int tubeWidth = width / 2;
-        int tubeHeight = height - 20;
+        int tubeHeight = height - 100; // Höhe des Reagenzglases verringert
         int x = (width - tubeWidth) / 2;
-        int y = 10;
+        int y = 100; // Startpunkt nach unten verschoben
 
         g2d.setColor(Color.BLACK);
         g2d.drawRect(x, y, tubeWidth, tubeHeight);
