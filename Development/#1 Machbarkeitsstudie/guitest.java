@@ -76,7 +76,7 @@ public class guitest {
                     selectedPanel.transferColorTo(panel);
                     if (isGameFinished(panel.getParent())) {
                         timer.stop();
-                        JOptionPane.showMessageDialog(null, "Heyy, du hast alle Farben Sortiert");
+                        JOptionPane.showMessageDialog(null, "Heyy, du hast alle Farben sortiert in " + timerLabel.getText());
                     }
                 }
                 selectedPanel.setBorder(null);
