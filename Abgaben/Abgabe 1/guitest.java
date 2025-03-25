@@ -19,16 +19,16 @@ public class guitest {
         frame.setLayout(new GridLayout(1, 5)); // 1 Zeile, 5 Spalten
 
         // Panels 1, 2, 3, 4 und 5 (leeres Glas)
-        ReagenzglasPanel panel1 = new ReagenzglasPanel(new Color[]{Color.RED, Color.GREEN, Color.BLUE});
+        ReagenzglasPanel panel1 = new ReagenzglasPanel(new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.BLUE});
         frame.add(panel1);
         
-        ReagenzglasPanel panel2 = new ReagenzglasPanel(new Color[]{Color.YELLOW, Color.RED, Color.GREEN});
+        ReagenzglasPanel panel2 = new ReagenzglasPanel(new Color[]{Color.YELLOW, Color.RED, Color.GREEN, Color.RED});
         frame.add(panel2);
 
-        ReagenzglasPanel panel3 = new ReagenzglasPanel(new Color[]{Color.BLUE, Color.YELLOW, Color.RED});
+        ReagenzglasPanel panel3 = new ReagenzglasPanel(new Color[]{Color.BLUE, Color.YELLOW, Color.RED, Color.GREEN});
         frame.add(panel3);
 
-        ReagenzglasPanel panel4 = new ReagenzglasPanel(new Color[]{Color.GREEN, Color.BLUE, Color.YELLOW});
+        ReagenzglasPanel panel4 = new ReagenzglasPanel(new Color[]{Color.GREEN, Color.BLUE, Color.YELLOW, Color.YELLOW});
         frame.add(panel4);
 
         ReagenzglasPanel panel5 = new ReagenzglasPanel(new Color[]{}); // leeres Glas
