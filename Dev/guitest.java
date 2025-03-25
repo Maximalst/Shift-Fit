@@ -4,10 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class guitest {
     private static ReagenzglasPanel selectedPanel = null;
     private static Timer timer;
+    private static boolean timerStarted = false;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Water Sort Puzzle");
@@ -46,14 +49,13 @@ public class guitest {
                 timerLabel.setText("Time: " + seconds + " s");
             }
         });
-        timer.start();
 
         // Add mouse listeners to panels
-        panel1.addMouseListener(new PanelMouseListener(panel1));
-        panel2.addMouseListener(new PanelMouseListener(panel2));
-        panel3.addMouseListener(new PanelMouseListener(panel3));
-        panel4.addMouseListener(new PanelMouseListener(panel4));
-        panel5.addMouseListener(new PanelMouseListener(panel5));
+        panel1.addMouseListener(new PanelMouseListener(panel1, timerLabel));
+        panel2.addMouseListener(new PanelMouseListener(panel2, timerLabel));
+        panel3.addMouseListener(new PanelMouseListener(panel3, timerLabel));
+        panel4.addMouseListener(new PanelMouseListener(panel4, timerLabel));
+        panel5.addMouseListener(new PanelMouseListener(panel5, timerLabel));
 
         // Zeigt das Fenster
         frame.setVisible(true);
@@ -61,13 +63,20 @@ public class guitest {
 
     static class PanelMouseListener extends MouseAdapter {
         private ReagenzglasPanel panel;
+        private JLabel timerLabel;
 
-        public PanelMouseListener(ReagenzglasPanel panel) {
+        public PanelMouseListener(ReagenzglasPanel panel, JLabel timerLabel) {
             this.panel = panel;
+            this.timerLabel = timerLabel;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            if (!timerStarted) {
+                timer.start();
+                timerStarted = true;
+            }
+
             if (selectedPanel == null) {
                 selectedPanel = panel;
                 panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
@@ -85,24 +94,31 @@ public class guitest {
         }
 
         private boolean isGameFinished(Container parent) {
+            boolean hasEmptyGlass = false;
             for (Component comp : parent.getComponents()) {
                 if (comp instanceof ReagenzglasPanel) {
                     ReagenzglasPanel p = (ReagenzglasPanel) comp;
-                    if (!p.isUniformColor()) {
+                    if (p.getColors().isEmpty()) {
+                        hasEmptyGlass = true;
+                    } else if (!p.isUniformColor()) {
                         return false;
                     }
                 }
             }
-            return true;
+            return hasEmptyGlass;
         }
     }
 }
 
 class ReagenzglasPanel extends JPanel {
-    private java.util.List<Color> colors;
+    private List<Color> colors;
+
+    public List<Color> getColors() {
+        return colors;
+    }
 
     public ReagenzglasPanel(Color[] colors) {
-        this.colors = new java.util.ArrayList<>(java.util.Arrays.asList(colors));
+        this.colors = new ArrayList<>(java.util.Arrays.asList(colors));
     }
 
     @Override
@@ -120,23 +136,36 @@ class ReagenzglasPanel extends JPanel {
         int y = 100; // Startpunkt nach unten verschoben
 
         g2d.setColor(Color.BLACK);
-        g2d.drawRect(x, y, tubeWidth, tubeHeight);
-        g2d.drawOval(x, y - tubeWidth / 2, tubeWidth, tubeWidth);
+        g2d.drawRoundRect(x, y, tubeWidth, tubeHeight, 20, 20);
+        g2d.drawRoundRect(x, y - tubeWidth / 2, tubeWidth, tubeWidth / 2, 20, 20);
 
         // Zeichne die Flüssigkeitsschichten
-        int liquidHeight = tubeHeight / (colors.size() + 1); // +1 to leave space at the top
+        int maxSegments = 4; // Maximale Anzahl von Segmenten im Reagenzglas
+        int segmentHeight = tubeHeight / maxSegments;
         for (int i = 0; i < colors.size(); i++) {
             g2d.setColor(colors.get(i));
-            g2d.fillRect(x, y + tubeHeight - (i + 1) * liquidHeight, tubeWidth, liquidHeight);
+            GradientPaint gradient = new GradientPaint(x, y + tubeHeight - (i + 1) * segmentHeight, colors.get(i), x + tubeWidth, y + tubeHeight - (i + 1) * segmentHeight + segmentHeight, colors.get(i).darker());
+            g2d.setPaint(gradient);
+            g2d.fillRoundRect(x, y + tubeHeight - (i + 1) * segmentHeight, tubeWidth, segmentHeight, 20, 20);
         }
     }
 
     public void transferColorTo(ReagenzglasPanel targetPanel) {
         if (!colors.isEmpty()) {
             Color colorToTransfer = colors.get(colors.size() - 1);
+            int count = 0;
+            for (int i = colors.size() - 1; i >= 0; i--) {
+                if (colors.get(i).equals(colorToTransfer)) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
             if (targetPanel.canAcceptColor(colorToTransfer)) {
-                colors.remove(colors.size() - 1);
-                targetPanel.addColor(colorToTransfer);
+                for (int i = 0; i < count; i++) {
+                    colors.remove(colors.size() - 1);
+                    targetPanel.addColor(colorToTransfer);
+                }
                 repaint();
                 targetPanel.repaint();
             }
@@ -144,7 +173,7 @@ class ReagenzglasPanel extends JPanel {
     }
 
     public boolean canAcceptColor(Color color) {
-        return colors.isEmpty() || colors.get(colors.size() - 1).equals(color);
+        return colors.isEmpty() || (colors.size() < 4 && colors.get(colors.size() - 1).equals(color));
     }
 
     public void addColor(Color color) {
