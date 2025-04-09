@@ -1,74 +1,32 @@
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.BasicStroke;
 
-public class Game {
-    public static void main(String[] args) {
-        System.out.println("Starte Game");
-
-        // J-Frame Starten
-        System.out.println("Starte JFrame");
-        JFrame frame = new JFrame("SHIFT-FIT");
-        frame.setSize(800, 700); // Fenstergröße setzen
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Fenster nur durch manuellen Schließen schließen
-
-        // Custom Panel mit Reagenzgläsern hinzufügen
-        JPanel container = new JPanel();
-        container.setLayout(new GridLayout(1, 5)); // GridLayout with 1 row and 5 columns
-        container.add(new Glas1());
-        container.add(new Glas2());
-        container.add(new Glas3());
-        container.add(new Glas4());
-        container.add(new Glas5());
-        frame.add(container);
-
-        frame.setVisible(true); // Mache das Fenster sichtbar
-    }
-}
-
-class Glas1 extends JPanel {
+class Glas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.BLUE);
-        g.fillRect(10, 10, 50, 200); // Beispiel: Rechteck als Glas
-    }
-}
+        Graphics2D g2d = (Graphics2D) g;
+        int width = getWidth();
+        int height = getHeight();
+        int rectWidth = 300;
+        int rectHeight = 800;
+        int x = (width - rectWidth) / 2; 
+        int y = (height - rectHeight) / 2; 
 
-class Glas2 extends JPanel {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.RED);
-        g.fillRect(70, 10, 50, 200); // Beispiel: Rechteck als Glas
-    }
-}
+        // Zeichne das Glas (Rechteck)
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(3)); // Dickere Striche
+        g2d.drawRect(x, y, rectWidth, rectHeight); // Rechteck als Glas mit nur Strichen
 
-
-class Glas3 extends JPanel {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.RED);
-        g.fillRect(200, 100, 50, 200); // Beispiel: Rechteck als Glas
-    }
-}
-
-
-class Glas4 extends JPanel {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.RED);
-        g.fillRect(200, 100, 50, 200); // Beispiel: Rechteck als Glas
-    }
-}
-
-
-class Glas5 extends JPanel {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.RED);
-        g.fillRect(200, 100, 50, 200); // Beispiel: Rechteck als Glas
+        // Unterteile das Glas in 5 Bereiche
+        int numSections = 5;
+        int sectionHeight = rectHeight / numSections;
+        for (int i = 1; i < numSections; i++) {
+            int lineY = y + i * sectionHeight;
+            g2d.drawLine(x, lineY, x + rectWidth, lineY); // Horizontale Linie zeichnen
+        }
     }
 }
