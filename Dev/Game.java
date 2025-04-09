@@ -1,10 +1,36 @@
-import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.BasicStroke;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 class Glas extends JPanel {
+    private int secondsElapsed = 0; // Zeit in Sekunden
+    private JLabel timerLabel;
+
+    public Glas() {
+        setLayout(null); // Absolute Positionierung
+
+        // Timer-Label
+        timerLabel = new JLabel("Zeit: 0s");
+        timerLabel.setBounds(350, 20, 100, 30); // Position und Größe
+        add(timerLabel);
+
+        // Timer starten
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondsElapsed++;
+                timerLabel.setText("Zeit: " + secondsElapsed + "s");
+            }
+        });
+        timer.start();
+
+        // "Neues Spiel"-Knopf
+        JButton newGameButton = new JButton("Neues Spiel");
+        newGameButton.setBounds(350, 60, 120, 30); // Position und Größe
+        add(newGameButton);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -13,8 +39,8 @@ class Glas extends JPanel {
         int height = getHeight();
         int rectWidth = 300;
         int rectHeight = 800;
-        int x = (width - rectWidth) / 2; 
-        int y = (height - rectHeight) / 2; 
+        int x = (width - rectWidth) / 2;
+        int y = (height - rectHeight) / 2;
 
         // Zeichne das Glas (Rechteck)
         g2d.setColor(Color.BLACK);
