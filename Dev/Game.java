@@ -21,11 +21,9 @@ public class Game {
         container.add(new Glas5());
         frame.add(container);
 
-
         frame.setVisible(true); // Mache das Fenster sichtbar
     }
 }
-
 
 class Glas1 extends JPanel {
     @Override
