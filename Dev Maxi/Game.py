@@ -54,11 +54,11 @@ def giesse(von, nach):
             zug_anzahl += 1
             zug_label.config(text=f"Züge: {zug_anzahl}")
             zeichne()
-
+# macOS only Sound und Linux Erweiterung
 def spiele_gewinn_sound():
     sound_datei = os.path.join(os.path.dirname(__file__), "gewonnen.mp3")
     if os.path.exists(sound_datei):
-        subprocess.Popen(["afplay", sound_datei])  # macOS only
+        subprocess.Popen(["afplay", sound_datei])  
 
 def zeichne():
     global spiel_gewonnen
@@ -143,3 +143,7 @@ canvas.bind("<Button-1>", klick)
 zeichne()
 update_timer()
 root.mainloop()
+
+
+
+#alle farben müssen 4 mal vorkommen!!!! kann noc umgesetzt werden 
