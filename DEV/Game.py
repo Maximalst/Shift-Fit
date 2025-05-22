@@ -5,6 +5,7 @@ import time
 import subprocess
 import os
 
+
 # Konfiguration
 FARBEN = ["red", "blue", "green", "yellow"]
 SCHICHTEN = 4
@@ -75,13 +76,24 @@ def zeichne():
             y_pos = y + (SCHICHTEN - j - 1) * 50
             canvas.create_rectangle(x + 2, y_pos + 2, x + 58, y_pos + 48, fill=farbe, outline=farbe)
 
+
+
+###### Bitte noch den hihscore verbessern daten werden nicht gepeichert!!!!
     if not spiel_gewonnen and pruefe_gewonnen(glaeser):
         spiel_gewonnen = True
         dauer = int(time.time() - startzeit)
         spiele_gewinn_sound()
-        messagebox.showinfo("🎉 Gewonnen!", f"Du hast gewonnen in {zug_anzahl} Zügen und {dauer} Sekunden!")
+        speichere_highscore(zug_anzahl, dauer)
+        best_zuege, best_zeit = lade_highscore()
+        minuten = best_zeit // 60
+        sekunden = best_zeit % 60
+        messagebox.showinfo("🎉 Gewonnen!",
+            f"Du hast gewonnen in {zug_anzahl} Zügen und {dauer} Sekunden!\n"
+            f"🏆 Highscore: {best_zuege} Züge / {minuten:02d}:{sekunden:02d}")
+
 
 def klick(event):
+    
     global auswahl
     index = event.x // 130
     if index >= len(glaeser):
