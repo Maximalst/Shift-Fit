@@ -151,4 +151,3 @@ root.mainloop()
 
 
 
-#alle farben müssen 4 mal vorkommen!!!! kann noc umgesetzt werden 
