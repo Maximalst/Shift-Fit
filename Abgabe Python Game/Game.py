@@ -76,13 +76,17 @@ def zeichne():
             y_pos = y + (SCHICHTEN - j - 1) * 50
             canvas.create_rectangle(x + 2, y_pos + 2, x + 58, y_pos + 48, fill=farbe, outline=farbe)
 
-    if not spiel_gewonnen and pruefe_gewonnen(glaeser):
-        spiel_gewonnen = True
-        dauer = int(time.time() - startzeit)
-        spiele_gewinn_sound()
-        messagebox.showinfo("🎉 Gewonnen!", f"Du hast gewonnen in {zug_anzahl} Zügen und {dauer} Sekunden!")
+
+            if not spiel_gewonnen and pruefe_gewonnen(glaeser):
+                spiel_gewonnen = True
+                dauer = int(time.time() - startzeit)
+                spiele_gewinn_sound()
+                messagebox.showinfo("🎉 Gewonnen!",
+                    f"Du hast gewonnen in {zug_anzahl} Zügen und {dauer} Sekunden!")
+
 
 def klick(event):
+    
     global auswahl
     index = event.x // 130
     if index >= len(glaeser):
@@ -131,7 +135,7 @@ canvas.pack(side="left")
 button_frame = tk.Frame(root)
 button_frame.pack(side="right", fill="y", padx=10, pady=20)
 
-restart_button = tk.Button(button_frame, text="🔄 Neu starten", command=neustart, font=("Arial", 12))
+restart_button = tk.Button(button_frame, text="Neu starten", command=neustart, font=("Arial", 12))
 restart_button.pack(pady=10)
 
 zug_label = tk.Label(button_frame, text="Züge: 0", font=("Arial", 12))
