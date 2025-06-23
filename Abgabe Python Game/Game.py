@@ -21,7 +21,7 @@ def generiere_startzustand():
             glaeser[i].append(farben[index])
             index += 1
     return glaeser
-
+#prüfe gewonnen
 def pruefe_gewonnen(glaeser):
     farben_gefunden = set()
 
@@ -88,11 +88,7 @@ def zeichne():
         eintrag = f"{spiel_index:2d}. Züge: {zug_anzahl:2d} | Zeit: {dauer:3d}s" 
         spielzeiten.append((dauer, eintrag)) 
         spiel_index += 1 
-
-        # Liste aktualisieren 
         spielzeit_liste.insert(tk.END, eintrag) 
-
-        # Highscore berechnen 
         bester = min(spielzeiten, key=lambda x: x[0])[1] 
         highscore_label.config(text=f"Highscore: {bester}") 
 
@@ -108,7 +104,7 @@ def klick(event):
         giesse(auswahl[0], auswahl[1])
         auswahl = []
     else:
-        zeichne()  # nur beim ersten Klick neu zeichnen
+        zeichne()  # nur beim ersten Klick neu zeichnen!!!!
 
 def update_timer():
     if not spiel_gewonnen:
