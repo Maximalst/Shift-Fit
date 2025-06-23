@@ -156,7 +156,6 @@ zug_label.pack(pady=10)
 timer_label = tk.Label(button_frame, text="Zeit: 00:00", font=("Arial", 12))
 timer_label.pack(pady=10)
 
-# Neue Widgets für Spielhistorie und Highscore 
 spielzeit_label = tk.Label(button_frame, text="Letzte Spiele", font=("Arial", 12, "bold")) 
 spielzeit_label.pack(pady=(20, 5))
 
