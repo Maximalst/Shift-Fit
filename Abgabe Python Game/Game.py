@@ -5,7 +5,6 @@ import time
 import subprocess
 import os
 
-
 # Konfiguration
 FARBEN = ["red", "blue", "green", "yellow"]
 SCHICHTEN = 4
@@ -17,7 +16,7 @@ def generiere_startzustand():
 
     glaeser = [[] for _ in range(GLAS_ANZAHL)]
     index = 0
-    for i in range(3):  # Nur 3 Gläser befüllt
+    for i in range(3): 
         for _ in range(SCHICHTEN):
             glaeser[i].append(farben[index])
             index += 1
@@ -55,6 +54,7 @@ def giesse(von, nach):
             zug_anzahl += 1
             zug_label.config(text=f"Züge: {zug_anzahl}")
             zeichne()
+
 # macOS only Sound und Linux Erweiterung
 def spiele_gewinn_sound():
     sound_datei = os.path.join(os.path.dirname(__file__), "gewonnen.mp3")
@@ -76,17 +76,27 @@ def zeichne():
             y_pos = y + (SCHICHTEN - j - 1) * 50
             canvas.create_rectangle(x + 2, y_pos + 2, x + 58, y_pos + 48, fill=farbe, outline=farbe)
 
+    if not spiel_gewonnen and pruefe_gewonnen(glaeser): 
+        spiel_gewonnen = True 
+        dauer = int(time.time() - startzeit) 
+        spiele_gewinn_sound() 
+        messagebox.showinfo("Gewonnen!", 
+            f"Du hast gewonnen in {zug_anzahl} Zügen und {dauer} Sekunden!") 
 
-            if not spiel_gewonnen and pruefe_gewonnen(glaeser):
-                spiel_gewonnen = True
-                dauer = int(time.time() - startzeit)
-                spiele_gewinn_sound()
-                messagebox.showinfo("🎉 Gewonnen!",
-                    f"Du hast gewonnen in {zug_anzahl} Zügen und {dauer} Sekunden!")
+        # Spielzeit speichern
+        global spiel_index 
+        eintrag = f"{spiel_index:2d}. Züge: {zug_anzahl:2d} | Zeit: {dauer:3d}s" 
+        spielzeiten.append((dauer, eintrag)) 
+        spiel_index += 1 
 
+        # Liste aktualisieren 
+        spielzeit_liste.insert(tk.END, eintrag) 
+
+        # Highscore berechnen 
+        bester = min(spielzeiten, key=lambda x: x[0])[1] 
+        highscore_label.config(text=f"Highscore: {bester}") 
 
 def klick(event):
-    
     global auswahl
     index = event.x // 130
     if index >= len(glaeser):
@@ -124,6 +134,8 @@ auswahl = []
 zug_anzahl = 0
 startzeit = time.time()
 spiel_gewonnen = False
+spielzeiten = [] 
+spiel_index = 1 
 
 # GUI
 root = tk.Tk()
@@ -144,10 +156,17 @@ zug_label.pack(pady=10)
 timer_label = tk.Label(button_frame, text="Zeit: 00:00", font=("Arial", 12))
 timer_label.pack(pady=10)
 
+# Neue Widgets für Spielhistorie und Highscore 
+spielzeit_label = tk.Label(button_frame, text="Letzte Spiele", font=("Arial", 12, "bold")) 
+spielzeit_label.pack(pady=(20, 5))
+
+spielzeit_liste = tk.Listbox(button_frame, width=30, height=10, font=("Courier", 10)) 
+spielzeit_liste.pack() 
+
+highscore_label = tk.Label(button_frame, text="Highscore: –", font=("Arial", 12, "bold"))
+highscore_label.pack(pady=(10, 0)) 
+
 canvas.bind("<Button-1>", klick)
 zeichne()
 update_timer()
 root.mainloop()
-
-
-
