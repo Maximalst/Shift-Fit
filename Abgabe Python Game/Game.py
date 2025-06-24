@@ -8,7 +8,7 @@ import os
 # Konfiguration
 FARBEN = ["red", "blue", "green", "yellow"]
 SCHICHTEN = 4
-GLAS_ANZAHL = 5
+GLAS_ANZAHL = 6
 
 def generiere_startzustand():
     farben = FARBEN * SCHICHTEN
@@ -16,7 +16,7 @@ def generiere_startzustand():
 
     glaeser = [[] for _ in range(GLAS_ANZAHL)]
     index = 0
-    for i in range(3): 
+    for i in range(4): 
         for _ in range(SCHICHTEN):
             glaeser[i].append(farben[index])
             index += 1
@@ -137,7 +137,7 @@ spiel_index = 1
 root = tk.Tk()
 root.title("Wasser Sort Puzzle – 5 Gläser, 4 Farben")
 
-canvas = tk.Canvas(root, width=700, height=600, bg="white")
+canvas = tk.Canvas(root, width=900, height=800, bg="white")
 canvas.pack(side="left")
 
 button_frame = tk.Frame(root)
